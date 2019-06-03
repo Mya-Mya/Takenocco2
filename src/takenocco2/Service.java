@@ -46,9 +46,10 @@ public class Service extends JFrame implements WindowListener, KeyListener {
     private Scene nowScene;
     //<SceneManager.LoadScene>
     public void changeScene(Scene nextScene){
+        nowScene=nextScene;
+        nextScene.buildPrimaryAssets();
         getContentPane().removeAll();
         getContentPane().add(nextScene);
-        nowScene=nextScene;
     }
     public Scene getNowScene(){
         return nowScene;
@@ -89,6 +90,7 @@ public class Service extends JFrame implements WindowListener, KeyListener {
 
     }
 
+    //キー入力に関する変数と関数
     private Set<Integer> keypressing=new HashSet<>();
     public boolean isPressing(int keyCode){
         return keypressing.contains(keyCode);

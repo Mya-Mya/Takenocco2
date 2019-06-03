@@ -27,6 +27,7 @@ public final class Transform {
         phase=new Point(0,0);
     }
 
+    //★そのTransformインスタンスに従うクラスは必ずこれを呼び出すこと。
     public void addFollower(TransformFollower you){
         followerList.add(you);
         updatePosition();

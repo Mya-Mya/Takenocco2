@@ -1,21 +1,16 @@
 package takenocco2;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
-import javax.jws.WebParam;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Scene内に存在する全assetと全modelを把握する。
  * 全modelに対し、適当なタイミングでstart関数とupdate関数を呼び出す。
  * Sceneは、内部に大きなJPanelを保持し、それをJScrollPaneの機能であるスクロール機能を用いることでカメラの目線を再現する。
- * todo カメラの実装
  * Serviceの仕様により、全てのクラスがここにアクセスできる。
  */
 public abstract class Scene extends JScrollPane implements ActionListener, TransformFollower {
@@ -55,6 +50,8 @@ public abstract class Scene extends JScrollPane implements ActionListener, Trans
         new Timer(10,this).start();
     }
 
+    public abstract void buildPrimaryAssets();
+
     public void refreshModelList(){
         modelList=new ArrayList<>();
         for(Asset a:assetList){
@@ -62,20 +59,20 @@ public abstract class Scene extends JScrollPane implements ActionListener, Trans
         }
     }
 
-    private boolean calledStartInConstructor=false;
-    //★継承した全てのSceneは、コンストラクタで追加される全てのassetの初期設定が完了した時点でこれを呼び出すこと。
+    private boolean finishedBuildingPrimaryAssets =false;
+    //★継承した全てのSceneは、buildPrimaryAssetsで追加される全てのassetの初期設定が完了した時点でこれを呼び出すこと。
     public void callStartToAllModels(){
         for(Model m:modelList){
             m.start();
         }
-        calledStartInConstructor=true;
+        finishedBuildingPrimaryAssets =true;
     }
 
     public void addAsset(Asset a){
         sheet.add(a);
         assetList.add(a);
         refreshModelList();
-        if(calledStartInConstructor){
+        if(finishedBuildingPrimaryAssets){
             for (Model m :modelList) {
                 m.start();
             }
