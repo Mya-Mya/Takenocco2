@@ -11,36 +11,40 @@ import java.util.List;
  * ★親子関係の構築はSceneのコンストラクタにてやるべき。
  */
 public final class Transform {
-    public TransformFollower follower;
+    public List<TransformFollower> followerList;
     public List<Transform>childList;
     public Point initialPhase;
     public Point phase;
     public Point position;
     public Dimension size;
 
-    public Transform(TransformFollower you){
-        follower=you;
+    public Transform(){
+        followerList=new ArrayList<>();
         childList= new ArrayList<>();
         size=new Dimension(50,50);
         initialPhase=new Point(0,0);
         position=new Point(0,0);
         phase=new Point(0,0);
+    }
+
+    public void addFollower(TransformFollower you){
+        followerList.add(you);
         updatePosition();
     }
 
     //★Assetの大きさは必ずこれで変更すること。
     public void setSize(Dimension size){
         this.size=size;
-        follower.transformChanged();
+        fireTransformChanged();
     }
 
-    //★Assetの位置は必ずこれで変更すること。
+    //★位置は必ずこれで変更すること。
     public void shiftPhase(int dx,int dy){
         phase.translate(dx, dy);
         updatePosition();
     }
 
-    //★Assetの位置は必ずこれで変更すること。
+    //★位置は必ずこれで変更すること。
     public void setPhase(Point phase){
         this.phase=phase;
         updatePosition();
@@ -62,6 +66,12 @@ public final class Transform {
         for(Transform t:childList){
             t.setInitialPhase(position);
         }
-        follower.transformChanged();
+        fireTransformChanged();
+    }
+
+    protected void fireTransformChanged(){
+        for (TransformFollower follower :followerList) {
+            follower.transformChanged();
+        }
     }
 }

@@ -58,21 +58,27 @@ public abstract class Scene extends JScrollPane implements ActionListener {
         }
     }
 
-    //★継承した全てのSceneはassetの初期設定が完了した時点でこれを呼び出すこと。
+    private boolean calledStartInConstructor=false;
+    //★継承した全てのSceneは、コンストラクタで追加される全てのassetの初期設定が完了した時点でこれを呼び出すこと。
     public void callStartToAllModels(){
         for(Model m:modelList){
             m.start();
         }
+        calledStartInConstructor=true;
     }
 
     public void addAsset(Asset a){
         sheet.add(a);
         assetList.add(a);
         refreshModelList();
-        for(Model m:a.modelList){
-            m.start();
+        if(calledStartInConstructor){
+            for (Model m :modelList) {
+                m.start();
+            }
+
         }
     }
+
     public void removeAsset(Asset a){
         sheet.remove(a);
         assetList.remove(a);
