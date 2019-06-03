@@ -18,13 +18,14 @@ import java.util.List;
  * todo カメラの実装
  * Serviceの仕様により、全てのクラスがここにアクセスできる。
  */
-public abstract class Scene extends JScrollPane implements ActionListener {
+public abstract class Scene extends JScrollPane implements ActionListener, TransformFollower {
     protected Service service;
     protected List<Asset>assetList;
     protected List<Model>modelList;
     protected JPanel sheet;
     protected Dimension sheetSize;
     protected Dimension sceneSize;
+    public Transform cameraTransform;
 
     public Scene(Dimension sheetSize){
         super();
@@ -46,6 +47,9 @@ public abstract class Scene extends JScrollPane implements ActionListener {
         getViewport().setView(sheet);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+
+        cameraTransform=new Transform();
+        cameraTransform.addFollower(this);
 
         this.setVisible(true);
         new Timer(10,this).start();
@@ -111,5 +115,10 @@ public abstract class Scene extends JScrollPane implements ActionListener {
         for(Model m:modelList){
             m.update();
         }
+    }
+
+    @Override//TransformFollower
+    public void transformChanged() {
+        viewport.setViewPosition(cameraTransform.position);
     }
 }
