@@ -23,7 +23,7 @@ public class Test2Scene extends Scene {
         addAsset(moon);
         addAsset(moover);
 
-        sun.transform.setInitialPhase(new Point(500,500));
+        sun.transform.setInitialPhase(new Point(1500,1500));
         sun.transform.addChild(earth.transform);
         earth.transform.addChild(moon.transform);
 

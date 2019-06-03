@@ -37,6 +37,7 @@ public class Service extends JFrame implements WindowListener, KeyListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         cntSize=getRootPane().getSize();
+        getRootPane().setDoubleBuffered(true);
         setFocusable(true);
         addKeyListener(this);
         setVisible(true);

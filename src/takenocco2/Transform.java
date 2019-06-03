@@ -61,6 +61,10 @@ public final class Transform {
         child.setInitialPhase(position);
     }
 
+    public void removeChild(Transform child){
+        childList.remove(child);
+    }
+
     protected void updatePosition(){
         position.x=initialPhase.x+phase.x;
         position.y=initialPhase.y+phase.y;
