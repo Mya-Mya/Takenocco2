@@ -14,9 +14,11 @@ public final class Transform {
     public List<TransformFollower> followerList;
     public List<Transform>childList;
     public Point initialPhase;
+
     public Point phase;
     public Point position;
     public Dimension size;
+
 
     public Transform(){
         followerList=new ArrayList<>();
@@ -50,6 +52,7 @@ public final class Transform {
         this.phase=phase;
         updatePosition();
     }
+
 
     public void setInitialPhase(Point initialPhase) {
         this.initialPhase = initialPhase;
